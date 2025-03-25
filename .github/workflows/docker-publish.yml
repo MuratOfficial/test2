@@ -1,0 +1,25 @@
+name: 🚀 Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main  # Запускать CI/CD при пуше в main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛎️ Checkout репозиторий
+        uses: actions/checkout@v4
+
+      - name: 🔑 Войти в Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: 🔨 Собрать и загрузить Docker-образ
+        run: |
+          docker build --build-arg NODE_OPTIONS=--openssl-legacy-provider -t ${{ secrets.DOCKERHUB_USERNAME }}/elma-smb-service:latest .
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/elma-smb-service:latest
