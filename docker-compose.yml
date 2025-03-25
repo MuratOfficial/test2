@@ -1,0 +1,12 @@
+
+services:
+  elma-smb-file-service:
+    build: .
+    container_name: elma-smb-file-service
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./temp:/app/temp
+    environment:
+      - NODE_ENV=production
+
